@@ -153,15 +153,52 @@
     <div id="results"></div>
   </div>
   <script>
-    // Data for search results: name, city, category, address, description
+    // Data for search results: includes latitude, longitude and whether the service can deliver online
     const data = [
-      {
-        name: 'East Coast Organics',
-        city: 'Edinburgh',
-        category: 'Veg box scheme',
-        address: '24 Boggs Holdings, Pencaitland, East Lothian EH34 5BD',
-        description: 'Organic veg and fruit boxes delivered weekly or fortnightly around Edinburgh and East Lothian.'
-      },
+      { name: 'East Coast Organics', city: 'Edinburgh', category: 'Veg box scheme', address: '24 Boggs Holdings, Pencaitland, East Lothian EH34 5BD', description: 'Organic veg and fruit boxes delivered weekly or fortnightly around Edinburgh and East Lothian.', lat: 55.9533, lon: -3.1883, online: true },
+      { name: 'Craigies Farm Shop & Café', city: 'Edinburgh', category: 'Farm shop & café', address: 'West Craigie Farm, South Queensferry EH30 9AR', description: 'Family farm with a farm shop, café and pick-your-own fruit.', lat: 55.9533, lon: -3.1883 },
+      { name: 'The Free Company', city: 'Edinburgh', category: 'Veg box & events', address: 'Balerno, Edinburgh', description: 'Regenerative farm delivering veg boxes and hosting seasonal dinners and community events.', lat: 55.9533, lon: -3.1883, online: true },
+      { name: 'Real Foods', city: 'Edinburgh', category: 'Natural food store', address: '37 Broughton Street, EH1 3JU', description: 'Worker-run retailer selling organic, vegan and Fairtrade foods.', lat: 55.9533, lon: -3.1883 },
+      { name: 'Damhead Organic Farm', city: 'Edinburgh', category: 'Market garden & farm shop', address: '32A Damhead, Lothianburn EH10 7EA', description: 'Market garden and farm shop producing organic vegetables and herbs.', lat: 55.9533, lon: -3.1883 },
+      { name: 'Locavore', city: 'Glasgow', category: 'Farm shops & veg boxes', address: 'Govanhill: 349 Victoria Road G42 7SA and Partick: 449 Dumbarton Road G11 6EJ', description: 'Social-enterprise grocer delivering seasonal veg boxes; shops stock organic produce and refills.', lat: 55.8642, lon: -4.2518, online: true },
+      { name: 'Barnhill Farm', city: 'Glasgow', category: 'Farm shop', address: 'Barnhill Farm, Houston Road, Inchinnan PA4 9LU', description: 'Family farm with farm shop, milk station and café.', lat: 55.8642, lon: -4.2518 },
+      { name: 'Auchengree Farm Shop', city: 'Glasgow', category: 'Farm shop', address: 'Meikle Auchengree Farm, Auchengree Road, Glengarnock, Beith KA14 3BU', description: 'Farm shop with butchery, deli and tearoom.', lat: 55.8642, lon: -4.2518 },
+      { name: 'Grewar’s Farm Shop', city: 'Dundee', category: 'Farm shop', address: 'Dronley Farm, Muirhead DD3 0QJ', description: 'Family farm selling Scottish produce, vegetables, meats, cheeses and breads.', lat: 56.4620, lon: -2.9707 },
+      { name: "Arbuckle’s Farm Shop", city: 'Dundee', category: 'Seasonal farm shop', address: 'Star Inn Farm, Invergowrie DD2 5EJ', description: 'Seasonal farm shop open May–September offering home-grown veg, eggs and preserves.', lat: 56.4620, lon: -2.9707 },
+      { name: 'Macleod Organics', city: 'Inverness', category: 'Veg box scheme', address: 'Kylerona Farm, Ardersier IV2 7QZ', description: 'Long-established organic farm offering mixed fruit and veg boxes across the Highlands.', lat: 57.4778, lon: -4.2247, online: true },
+      { name: 'Natural Vegetable Company', city: 'Inverness', category: 'Veg box scheme', address: 'Clachandreggy, Torbreck IV2 6DJ', description: 'Weekly veg-box deliveries of home-grown organic vegetables in and around Inverness.', lat: 57.4778, lon: -4.2247, online: true },
+      { name: 'Knockfarrel Produce', city: 'Inverness', category: 'Croft & box scheme', address: 'Iain Mhor, Knockfarrel, Dingwall IV15 9TQ', description: 'Certified organic croft producing vegetables, salads and pork.', lat: 57.4778, lon: -4.2247 },
+      { name: 'Druid Temple Farm Shop', city: 'Inverness', category: 'Farm shop', address: 'Old Edinburgh Road South IV2 6AR', description: 'Self-service farm shop open Saturday mornings selling farm-grown produce.', lat: 57.4778, lon: -4.2247 },
+      { name: 'Farm Ness', city: 'Inverness', category: 'Farm shop', address: 'Dunain Mains, Loch Ness Road IV3 8JX', description: 'Farm shop open daily selling local fruit, veg and gifts.', lat: 57.4778, lon: -4.2247 },
+      { name: 'Black Isle Dairy', city: 'Inverness', category: 'Dairy & farm shop', address: 'Rootfield Farm, Mulbuie IV6 7RF', description: 'Artisan dairy producing gelato, milk and eggs with a self-service farm shop.', lat: 57.4778, lon: -4.2247 },
+      { name: 'Invercannich Farm / The Butcher’s Box', city: 'Inverness', category: 'Farm shop & experiences', address: 'Invercannich Farm IV4 7LS', description: 'Farm offering alpaca trekking and a self-service butcher’s box with home-reared meat.', lat: 57.4778, lon: -4.2247 },
+      { name: 'North East Organic Growers (NEOG)', city: 'Newcastle', category: 'Veg box co‑operative', address: 'West Sleekburn Farm, Bomarsund NE22 7AD', description: 'Worker-run co-operative delivering certified organic veg boxes around Newcastle.', lat: 54.9783, lon: -1.6178, online: true },
+      { name: 'The Paddock', city: 'Newcastle', category: 'Veg boxes & refill shop', address: '7‑9 Ramsay Street, High Spen NE39 2EL', description: 'Family-run zero-waste shop providing veg boxes, refill station and fair-trade groceries.', lat: 54.9783, lon: -1.6178, online: true },
+      { name: 'Ernie (Ouseburn)', city: 'Newcastle', category: 'Veg boxes & café', address: 'Stepney Road, Ouseburn NE2 1AP', description: 'Independent café and grocery selling fruit & veg boxes, groceries and locally roasted coffee.', lat: 54.9783, lon: -1.6178 },
+      { name: 'Goodness Growing', city: 'York', category: 'Veg bag scheme', address: 'Goodness Farm, Sheriff Hutton Road, Strensall YO32 5TP', description: 'Small farm delivering veg bags to York; customers can collect or opt for home delivery.', lat: 53.9590, lon: -1.0873, online: true },
+      { name: 'Newfields Organics', city: 'York', category: 'Farm & box scheme', address: 'Manor Wold View, Main Street, Fadmoor YO62 7HY', description: 'Long-running organic farm delivering veg boxes across North Yorkshire.', lat: 53.9590, lon: -1.0873, online: true },
+      { name: 'Millies York', city: 'York', category: 'Fruit & veg shop', address: '37 Bishopthorpe Road, York YO23 1NA', description: 'Local shop offering pre-made fruit and veg boxes for collection or delivery.', lat: 53.9590, lon: -1.0873 },
+      { name: 'Veg Box People', city: 'Manchester', category: 'Veg bags', address: 'Greater Manchester (various drop points)', description: 'Kindling Trust project sourcing organic produce from local farms and delivering by bike to collection points.', lat: 53.4808, lon: -2.2426, online: true },
+      { name: 'Unicorn Grocery', city: 'Manchester', category: 'Co‑operative store', address: '89 Albany Road, Chorlton M21 0BN', description: 'Worker-owned grocery offering organic fruit, veg, wholefoods and refills.', lat: 53.4808, lon: -2.2426 },
+      { name: 'OrganicLea', city: 'London', category: 'Veg box scheme & market stalls', address: 'Lea Valley, London', description: 'Worker-co-operative growing food; runs a veg-box scheme and community market stalls.', lat: 51.5074, lon: -0.1278, online: true },
+      { name: 'Growing Communities', city: 'London', category: 'Community veg box scheme', address: 'The Old Fire Station, 61 Leswin Road N16 7NX', description: 'Community-led veg-box and farmers’ market organisation sourcing from small farms.', lat: 51.5074, lon: -0.1278, online: true },
+      { name: 'Kentish Town Vegbox', city: 'London', category: 'Local veg box', address: 'The Thanet, Herbert Street NW5 4HD', description: 'Community project supplying affordable veg boxes sourced from small organic farms.', lat: 51.5074, lon: -0.1278, online: true },
+      { name: 'Becketts Farm Shop', city: 'Birmingham', category: 'Farm shop', address: 'Heath Farm, Alcester Road, Wythall B47 6AJ', description: 'Family farm with farm shop, bakery, butchery, deli and restaurant.', lat: 52.4862, lon: -1.8904 },
+      { name: 'Chase Farm Shop & Café', city: 'Birmingham', category: 'Farm shop & café', address: 'Weeford Road, Sutton Coldfield B75 5RL', description: 'Farm shop and café selling meats, dairy, baked goods and seasonal produce.', lat: 52.4862, lon: -1.8904 },
+      { name: 'Rossiters Organic Butchers', city: 'Birmingham', category: 'Organic butcher', address: '247 Mary Vale Road, Bournville B30 1PN', description: 'Soil Association-certified organic butcher with a five-star hygiene rating.', lat: 52.4862, lon: -1.8904 },
+      { name: 'Pick’s Organic Farm', city: 'Leicester', category: 'Farm shop & markets', address: 'The Cottage, Hamilton Grounds, Hamilton Lane, Barkby Thorpe LE7 3QF', description: 'Family farm offering organic meat and seasonal veg; runs farm shop and stalls at markets.', lat: 52.6369, lon: -1.1398 },
+      { name: 'Polebrook Hayes Farm', city: 'Leicester', category: 'CSA & delivery', address: 'Markfield Lane, Botcheston, Leicestershire', description: 'Certified organic smallholding delivering veg boxes and CSA shares.', lat: 52.6369, lon: -1.1398, online: true },
+      { name: 'Paul’s Organics / Soyfoods', city: 'Leicester', category: 'Veg boxes & vegan foods', address: '66 Snow Hill, Melton Mowbray LE13 1PH', description: 'Delivers fresh organic fruit and veg, bread and vegan foods across Leicestershire.', lat: 52.6369, lon: -1.1398, online: true },
+      { name: 'Windmill Wholefoods', city: 'Liverpool', category: 'Wholefood co‑op shop', address: '162 Aigburth Road, Liverpool L17 7BR', description: 'Worker-run wholefood shop selling organic fruit, veg and groceries with refill options.', lat: 53.4084, lon: -2.9916 },
+      { name: 'SQUASH', city: 'Liverpool', category: 'Community farm & veg boxes', address: '112‑114 Windsor Street, Liverpool L8 8EQ', description: 'Community-run organisation with a garden, café and weekly veg-box scheme; runs a solidarity scheme.', lat: 53.4084, lon: -2.9916, online: true },
+      { name: 'Lyncroft Farm', city: 'Liverpool', category: 'Veg box delivery', address: 'Butchers Lane, Aughton, Ormskirk L39 6SY', description: 'Organic farm delivering veg boxes within 24 hours of harvest; wholesale and retail orders available.', lat: 53.4084, lon: -2.9916, online: true },
+      { name: 'Coed Organic', city: 'Cardiff', category: 'Veg bag scheme', address: 'Llantrithyd Road near St Hilary, Vale of Glamorgan', description: '6.5-acre market garden supplying veg bags to Cardiff and the Vale.', lat: 51.4816, lon: -3.1791, online: true },
+      { name: 'Slade Farm Organics', city: 'Cardiff', category: 'Veg & meat boxes', address: 'St Brides Major, Vale of Glamorgan', description: 'Family farm delivering seasonal veg bags and monthly meat boxes across South Wales.', lat: 51.4816, lon: -3.1791, online: true },
+      { name: 'Paul’s Organic Veg', city: 'Cardiff', category: 'Market & veg boxes', address: 'Monmouthshire (various)', description: 'Monmouthshire smallholder growing organic veg; supplies Cardiff farmers’ markets and delivers veg boxes.', lat: 51.4816, lon: -3.1791, online: true },
+      { name: 'Bridgefoot Organic Co-operative', city: 'Aberdeen', category: 'Veg box scheme', address: 'Bridgefoot Farm, Newmachar AB21 7PE', description: 'Worker-run co-operative growing organic veg and delivering boxes around Aberdeen.', lat: 57.1497, lon: -2.0943, online: true },
+      { name: 'Vegaroonitoon (CFINE)', city: 'Aberdeen', category: 'Fruit & veg boxes', address: 'Aberdeen city', description: 'Community Food Initiatives North East delivery scheme offering several sizes of fruit and veg boxes.', lat: 57.1497, lon: -2.0943, online: true }
+    ];
+    /*
       {
         name: 'Craigies Farm Shop & Café',
         city: 'Edinburgh',
@@ -451,6 +488,7 @@
       }
     ];
 
+    */
     function getQueryParam(param) {
       const params = new URLSearchParams(window.location.search);
       return params.get(param) || '';
@@ -465,27 +503,76 @@
       }
     });
 
-    function performSearch() {
+    async function performSearch() {
       const cityVal = document.getElementById('cityFilter').value;
       const catVal = document.getElementById('categoryFilter').value;
-      const postVal = document.getElementById('postcodeFilter').value.trim().toLowerCase();
+      const postcodeVal = document.getElementById('postcodeFilter').value.trim();
       const keyVal = document.getElementById('keywordFilter').value.trim().toLowerCase();
       const resultsDiv = document.getElementById('results');
       resultsDiv.innerHTML = '';
-      const filtered = data.filter(item => {
+
+      // Haversine distance in miles
+      function distanceMiles(lat1, lon1, lat2, lon2) {
+        const toRad = deg => (deg * Math.PI) / 180;
+        const R = 6371; // Earth radius in km
+        const dLat = toRad(lat2 - lat1);
+        const dLon = toRad(lon2 - lon1);
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const km = R * c;
+        return km * 0.621371;
+      }
+
+      let userCoords = null;
+      if (postcodeVal) {
+        try {
+          const response = await fetch('https://api.postcodes.io/postcodes/' + encodeURIComponent(postcodeVal));
+          const dataJSON = await response.json();
+          if (dataJSON.status === 200 && dataJSON.result) {
+            userCoords = { lat: dataJSON.result.latitude, lon: dataJSON.result.longitude };
+          }
+        } catch (e) {
+          // ignore network errors; userCoords stays null
+        }
+      }
+
+      // Filter by city, category and keyword
+      let filtered = data.filter(item => {
         const cityMatch = !cityVal || item.city === cityVal;
         const categoryMatch = !catVal || item.category === catVal;
-        const postcodeMatch = !postVal || (item.address && item.address.toLowerCase().includes(postVal));
         const keywordMatch = !keyVal || item.name.toLowerCase().includes(keyVal) || item.description.toLowerCase().includes(keyVal);
-        return cityMatch && categoryMatch && postcodeMatch && keywordMatch;
+        return cityMatch && categoryMatch && keywordMatch;
       });
+
+      if (userCoords) {
+        // compute distance for each item
+        filtered = filtered.map(item => {
+          const dist = distanceMiles(userCoords.lat, userCoords.lon, item.lat, item.lon);
+          return Object.assign({}, item, { distance: dist });
+        });
+        const nearby = filtered.filter(item => item.distance <= 10);
+        if (nearby.length === 0) {
+          // no nearby matches: sort by online flag first then distance
+          filtered.sort((a, b) => {
+            const onlineA = a.online ? 0 : 1;
+            const onlineB = b.online ? 0 : 1;
+            if (onlineA !== onlineB) return onlineA - onlineB;
+            return a.distance - b.distance;
+          });
+        } else {
+          // show nearby only, sorted by distance
+          filtered = nearby.sort((a, b) => a.distance - b.distance);
+        }
+      }
+
       if (filtered.length === 0) {
         resultsDiv.innerHTML = '<p>No results found.</p>';
       } else {
         filtered.forEach(item => {
           const div = document.createElement('div');
           div.className = 'result';
-          div.innerHTML = `<h3>${item.name}</h3><p><strong>City:</strong> ${item.city}</p><p><strong>Category:</strong> ${item.category}</p><p><strong>Address:</strong> ${item.address}</p><p>${item.description}</p>`;
+          const distanceInfo = item.distance !== undefined ? `<p><strong>Distance:</strong> ${item.distance.toFixed(1)} miles</p>` : '';
+          div.innerHTML = `<h3>${item.name}</h3><p><strong>City:</strong> ${item.city}</p><p><strong>Category:</strong> ${item.category}</p><p><strong>Address:</strong> ${item.address}</p>${distanceInfo}<p>${item.description}</p>`;
           resultsDiv.appendChild(div);
         });
       }
