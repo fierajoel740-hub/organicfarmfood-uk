@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search – Organic Farm Food UK</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #fcf9f1;
+      color: #333;
+    }
+    header {
+      background-color: #a8dadc;
+      padding: 20px;
+      text-align: center;
+      color: #062925;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2em;
+    }
+    nav {
+      background-color: #f1faee;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      padding: 10px;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: #1d3557;
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      background-color: #d4e9e2;
+    }
+    nav a:hover {
+      background-color: #c2d8cf;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .filters input,
+    .filters select,
+    .filters button {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1em;
+    }
+    .filters button {
+      background-color: #457b9d;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    .filters button:hover {
+      background-color: #355a75;
+    }
+    .result {
+      margin-bottom: 20px;
+      padding: 15px;
+      background-color: #ffffff;
+      border-radius: 6px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    }
+    .result h3 {
+      margin-top: 0;
+      color: #457b9d;
+    }
+    .result p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Search Listings</h1>
+  </header>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="search.html">Search</a>
+    <a href="directory.html">Directory</a>
+    <a href="news.html">News</a>
+  </nav>
+  <div class="container">
+    <div class="filters">
+      <select id="cityFilter">
+        <option value="">All Cities</option>
+        <option>Aberdeen</option>
+        <option>Birmingham</option>
+        <option>Cardiff</option>
+        <option>Dundee</option>
+        <option>Edinburgh</option>
+        <option>Glasgow</option>
+        <option>Inverness</option>
+        <option>Leicester</option>
+        <option>Liverpool</option>
+        <option>London</option>
+        <option>Manchester</option>
+        <option>Newcastle</option>
+        <option>York</option>
+      </select>
+      <select id="categoryFilter">
+        <option value="">All Categories</option>
+        <option>Veg box scheme</option>
+        <option>Farm shop</option>
+        <option>Farm shop &amp; café</option>
+        <option>Veg box &amp; events</option>
+        <option>Natural food store</option>
+        <option>Market garden &amp; farm shop</option>
+        <option>Farm shops &amp; veg boxes</option>
+        <option>Seasonal farm shop</option>
+        <option>Croft &amp; box scheme</option>
+        <option>Dairy &amp; farm shop</option>
+        <option>Farm shop &amp; experiences</option>
+        <option>Veg box co‑operative</option>
+        <option>Veg boxes &amp; refill shop</option>
+        <option>Veg boxes &amp; café</option>
+        <option>Veg bag scheme</option>
+        <option>Farm &amp; box scheme</option>
+        <option>Fruit &amp; veg shop</option>
+        <option>Veg bags</option>
+        <option>Co‑operative store</option>
+        <option>Veg box scheme &amp; market stalls</option>
+        <option>Community veg box scheme</option>
+        <option>Local veg box</option>
+        <option>Organic butcher</option>
+        <option>Farm shop &amp; markets</option>
+        <option>CSA &amp; delivery</option>
+        <option>Veg boxes &amp; vegan foods</option>
+        <option>Wholefood co‑op shop</option>
+        <option>Community farm &amp; veg boxes</option>
+        <option>Veg box delivery</option>
+        <option>Veg &amp; meat boxes</option>
+        <option>Market &amp; veg boxes</option>
+        <option>Fruit &amp; veg boxes</option>
+      </select>
+      <input type="text" id="postcodeFilter" placeholder="Postcode" />
+      <input type="text" id="keywordFilter" placeholder="Keyword" />
+      <button onclick="performSearch()">Search</button>
+    </div>
+    <div id="results"></div>
+  </div>
+  <script>
+    // Data for search results: name, city, category, address, description
+    const data = [
+      {
+        name: 'East Coast Organics',
+        city: 'Edinburgh',
+        category: 'Veg box scheme',
+        address: '24 Boggs Holdings, Pencaitland, East Lothian EH34 5BD',
+        description: 'Organic veg and fruit boxes delivered weekly or fortnightly around Edinburgh and East Lothian.'
+      },
+      {
+        name: 'Craigies Farm Shop & Café',
+        city: 'Edinburgh',
+        category: 'Farm shop & café',
+        address: 'West Craigie Farm, South Queensferry EH30 9AR',
+        description: 'Family farm with a farm shop, café and pick-your-own fruit.'
+      },
+      {
+        name: 'The Free Company',
+        city: 'Edinburgh',
+        category: 'Veg box & events',
+        address: 'Balerno, Edinburgh',
+        description: 'Regenerative farm delivering veg boxes and hosting seasonal dinners and community events.'
+      },
+      {
+        name: 'Real Foods',
+        city: 'Edinburgh',
+        category: 'Natural food store',
+        address: '37 Broughton Street, EH1 3JU',
+        description: 'Worker-run retailer selling organic, vegan and Fairtrade foods.'
+      },
+      {
+        name: 'Damhead Organic Farm',
+        city: 'Edinburgh',
+        category: 'Market garden & farm shop',
+        address: '32A Damhead, Lothianburn EH10 7EA',
+        description: 'Market garden and farm shop producing organic vegetables and herbs.'
+      },
+      {
+        name: 'Locavore',
+        city: 'Glasgow',
+        category: 'Farm shops & veg boxes',
+        address: 'Govanhill: 349 Victoria Road G42 7SA and Partick: 449 Dumbarton Road G11 6EJ',
+        description: 'Social-enterprise grocer delivering seasonal veg boxes; shops stock organic produce and refills.'
+      },
+      {
+        name: 'Barnhill Farm',
+        city: 'Glasgow',
+        category: 'Farm shop',
+        address: 'Barnhill Farm, Houston Road, Inchinnan PA4 9LU',
+        description: 'Family farm with farm shop, milk station and café.'
+      },
+      {
+        name: 'Auchengree Farm Shop',
+        city: 'Glasgow',
+        category: 'Farm shop',
+        address: 'Meikle Auchengree Farm, Auchengree Road, Glengarnock, Beith KA14 3BU',
+        description: 'Farm shop with butchery, deli and tearoom.'
+      },
+      {
+        name: 'Grewar’s Farm Shop',
+        city: 'Dundee',
+        category: 'Farm shop',
+        address: 'Dronley Farm, Muirhead DD3 0QJ',
+        description: 'Family farm selling Scottish produce, vegetables, meats, cheeses and breads.'
+      },
+      {
+        name: "Arbuckle’s Farm Shop",
+        city: 'Dundee',
+        category: 'Seasonal farm shop',
+        address: 'Star Inn Farm, Invergowrie DD2 5EJ',
+        description: 'Seasonal farm shop open May–September offering home-grown veg, eggs and preserves.'
+      },
+      {
+        name: 'Macleod Organics',
+        city: 'Inverness',
+        category: 'Veg box scheme',
+        address: 'Kylerona Farm, Ardersier IV2 7QZ',
+        description: 'Long-established organic farm offering mixed fruit and veg boxes across the Highlands.'
+      },
+      {
+        name: 'Natural Vegetable Company',
+        city: 'Inverness',
+        category: 'Veg box scheme',
+        address: 'Clachandreggy, Torbreck IV2 6DJ',
+        description: 'Weekly veg-box deliveries of home-grown organic vegetables in and around Inverness.'
+      },
+      {
+        name: 'Knockfarrel Produce',
+        city: 'Inverness',
+        category: 'Croft & box scheme',
+        address: 'Iain Mhor, Knockfarrel, Dingwall IV15 9TQ',
+        description: 'Certified organic croft producing vegetables, salads and pork.'
+      },
+      {
+        name: 'Druid Temple Farm Shop',
+        city: 'Inverness',
+        category: 'Farm shop',
+        address: 'Old Edinburgh Road South IV2 6AR',
+        description: 'Self-service farm shop open Saturday mornings selling farm-grown produce.'
+      },
+      {
+        name: 'Farm Ness',
+        city: 'Inverness',
+        category: 'Farm shop',
+        address: 'Dunain Mains, Loch Ness Road IV3 8JX',
+        description: 'Farm shop open daily selling local fruit, veg and gifts.'
+      },
+      {
+        name: 'Black Isle Dairy',
+        city: 'Inverness',
+        category: 'Dairy & farm shop',
+        address: 'Rootfield Farm, Mulbuie IV6 7RF',
+        description: 'Artisan dairy producing gelato, milk and eggs with a self-service farm shop.'
+      },
+      {
+        name: 'Invercannich Farm / The Butcher’s Box',
+        city: 'Inverness',
+        category: 'Farm shop & experiences',
+        address: 'Invercannich Farm IV4 7LS',
+        description: 'Farm offering alpaca trekking and a self-service butcher’s box with home-reared meat.'
+      },
+      {
+        name: 'North East Organic Growers (NEOG)',
+        city: 'Newcastle',
+        category: 'Veg box co‑operative',
+        address: 'West Sleekburn Farm, Bomarsund NE22 7AD',
+        description: 'Worker-run co-operative delivering certified organic veg boxes around Newcastle.'
+      },
+      {
+        name: 'The Paddock',
+        city: 'Newcastle',
+        category: 'Veg boxes & refill shop',
+        address: '7‑9 Ramsay Street, High Spen NE39 2EL',
+        description: 'Family-run zero-waste shop providing veg boxes, refill station and fair-trade groceries.'
+      },
+      {
+        name: 'Ernie (Ouseburn)',
+        city: 'Newcastle',
+        category: 'Veg boxes & café',
+        address: 'Stepney Road, Ouseburn NE2 1AP',
+        description: 'Independent café and grocery selling fruit & veg boxes, groceries and locally roasted coffee.'
+      },
+      {
+        name: 'Goodness Growing',
+        city: 'York',
+        category: 'Veg bag scheme',
+        address: 'Goodness Farm, Sheriff Hutton Road, Strensall YO32 5TP',
+        description: 'Small farm delivering veg bags to York; collection or home delivery.'
+      },
+      {
+        name: 'Newfields Organics',
+        city: 'York',
+        category: 'Farm & box scheme',
+        address: 'Manor Wold View, Main Street, Fadmoor YO62 7HY',
+        description: 'Long-running organic farm delivering veg boxes across North Yorkshire.'
+      },
+      {
+        name: 'Millies York',
+        city: 'York',
+        category: 'Fruit & veg shop',
+        address: '37 Bishopthorpe Road, York YO23 1NA',
+        description: 'Local shop offering pre-made fruit and veg boxes for collection or delivery.'
+      },
+      {
+        name: 'Veg Box People',
+        city: 'Manchester',
+        category: 'Veg bags',
+        address: 'Greater Manchester (various drop points)',
+        description: 'Kindling Trust project sourcing organic produce from local farms and delivering by bike to collection points.'
+      },
+      {
+        name: 'Unicorn Grocery',
+        city: 'Manchester',
+        category: 'Co‑operative store',
+        address: '89 Albany Road, Chorlton M21 0BN',
+        description: 'Worker-owned grocery offering organic fruit, veg, wholefoods and refills.'
+      },
+      {
+        name: 'OrganicLea',
+        city: 'London',
+        category: 'Veg box scheme & market stalls',
+        address: 'Lea Valley, London',
+        description: 'Worker-co-operative growing food; runs a veg-box scheme and community market stalls.'
+      },
+      {
+        name: 'Growing Communities',
+        city: 'London',
+        category: 'Community veg box scheme',
+        address: 'The Old Fire Station, 61 Leswin Road N16 7NX',
+        description: 'Community-led veg-box and farmers’ market organisation sourcing from small farms.'
+      },
+      {
+        name: 'Kentish Town Vegbox',
+        city: 'London',
+        category: 'Local veg box',
+        address: 'The Thanet, Herbert Street NW5 4HD',
+        description: 'Community project supplying affordable veg boxes sourced from small organic farms.'
+      },
+      {
+        name: 'Becketts Farm Shop',
+        city: 'Birmingham',
+        category: 'Farm shop',
+        address: 'Heath Farm, Alcester Road, Wythall B47 6AJ',
+        description: 'Family farm with farm shop, bakery, butchery, deli and restaurant.'
+      },
+      {
+        name: 'Chase Farm Shop & Café',
+        city: 'Birmingham',
+        category: 'Farm shop & café',
+        address: 'Weeford Road, Sutton Coldfield B75 5RL',
+        description: 'Farm shop and café selling meats, dairy, baked goods and seasonal produce.'
+      },
+      {
+        name: 'Rossiters Organic Butchers',
+        city: 'Birmingham',
+        category: 'Organic butcher',
+        address: '247 Mary Vale Road, Bournville B30 1PN',
+        description: 'Soil Association-certified organic butcher with a five-star hygiene rating.'
+      },
+      {
+        name: 'Pick’s Organic Farm',
+        city: 'Leicester',
+        category: 'Farm shop & markets',
+        address: 'The Cottage, Hamilton Grounds, Hamilton Lane, Barkby Thorpe LE7 3QF',
+        description: 'Family farm offering organic meat and seasonal veg; runs farm shop and market stalls.'
+      },
+      {
+        name: 'Polebrook Hayes Farm',
+        city: 'Leicester',
+        category: 'CSA & delivery',
+        address: 'Markfield Lane, Botcheston, Leicestershire',
+        description: 'Certified organic smallholding delivering veg boxes and CSA shares.'
+      },
+      {
+        name: 'Paul’s Organics / Soyfoods',
+        city: 'Leicester',
+        category: 'Veg boxes & vegan foods',
+        address: '66 Snow Hill, Melton Mowbray LE13 1PH',
+        description: 'Delivers fresh organic fruit and veg, bread and vegan foods across Leicestershire.'
+      },
+      {
+        name: 'Windmill Wholefoods',
+        city: 'Liverpool',
+        category: 'Wholefood co‑op shop',
+        address: '162 Aigburth Road, Liverpool L17 7BR',
+        description: 'Worker-run wholefood shop selling organic fruit, veg and groceries with refill options.'
+      },
+      {
+        name: 'SQUASH',
+        city: 'Liverpool',
+        category: 'Community farm & veg boxes',
+        address: '112‑114 Windsor Street, Liverpool L8 8EQ',
+        description: 'Community-run organisation with a garden, café and weekly veg-box scheme; runs a solidarity scheme.'
+      },
+      {
+        name: 'Lyncroft Farm',
+        city: 'Liverpool',
+        category: 'Veg box delivery',
+        address: 'Butchers Lane, Aughton, Ormskirk L39 6SY',
+        description: 'Organic farm delivering veg boxes within 24 hours of harvest; offers wholesale and retail orders.'
+      },
+      {
+        name: 'Coed Organic',
+        city: 'Cardiff',
+        category: 'Veg bag scheme',
+        address: 'Llantrithyd Road near St Hilary, Vale of Glamorgan',
+        description: '6.5-acre market garden supplying veg bags to Cardiff and the Vale.'
+      },
+      {
+        name: 'Slade Farm Organics',
+        city: 'Cardiff',
+        category: 'Veg & meat boxes',
+        address: 'St Brides Major, Vale of Glamorgan',
+        description: 'Family farm delivering seasonal veg and monthly meat boxes across South Wales.'
+      },
+      {
+        name: 'Paul’s Organic Veg',
+        city: 'Cardiff',
+        category: 'Market & veg boxes',
+        address: 'Monmouthshire (various)',
+        description: 'Monmouthshire smallholder growing organic veg; supplies markets and delivers veg boxes.'
+      },
+      {
+        name: 'Bridgefoot Organic Co-operative',
+        city: 'Aberdeen',
+        category: 'Veg box scheme',
+        address: 'Bridgefoot Farm, Newmachar AB21 7PE',
+        description: 'Worker-run co-operative growing organic veg and delivering boxes around Aberdeen.'
+      },
+      {
+        name: 'Vegaroonitoon (CFINE)',
+        city: 'Aberdeen',
+        category: 'Fruit & veg boxes',
+        address: 'Aberdeen city',
+        description: 'Community Food Initiatives North East delivery scheme offering several sizes of fruit and veg boxes.'
+      }
+    ];
+
+    function getQueryParam(param) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(param) || '';
+    }
+
+    // Pre-fill keyword from home search
+    document.addEventListener('DOMContentLoaded', () => {
+      const query = getQueryParam('q');
+      if (query) {
+        document.getElementById('keywordFilter').value = query;
+        performSearch();
+      }
+    });
+
+    function performSearch() {
+      const cityVal = document.getElementById('cityFilter').value;
+      const catVal = document.getElementById('categoryFilter').value;
+      const postVal = document.getElementById('postcodeFilter').value.trim().toLowerCase();
+      const keyVal = document.getElementById('keywordFilter').value.trim().toLowerCase();
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML = '';
+      const filtered = data.filter(item => {
+        const cityMatch = !cityVal || item.city === cityVal;
+        const categoryMatch = !catVal || item.category === catVal;
+        const postcodeMatch = !postVal || (item.address && item.address.toLowerCase().includes(postVal));
+        const keywordMatch = !keyVal || item.name.toLowerCase().includes(keyVal) || item.description.toLowerCase().includes(keyVal);
+        return cityMatch && categoryMatch && postcodeMatch && keywordMatch;
+      });
+      if (filtered.length === 0) {
+        resultsDiv.innerHTML = '<p>No results found.</p>';
+      } else {
+        filtered.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'result';
+          div.innerHTML = `<h3>${item.name}</h3><p><strong>City:</strong> ${item.city}</p><p><strong>Category:</strong> ${item.category}</p><p><strong>Address:</strong> ${item.address}</p><p>${item.description}</p>`;
+          resultsDiv.appendChild(div);
+        });
+      }
+    }
+  </script>
+</body>
+</html>
