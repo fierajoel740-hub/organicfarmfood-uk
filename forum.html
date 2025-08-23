@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forum – Organic Farm Food UK</title>
+  <!-- Global styles -->
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Page-specific styles for forum */
+    form label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+    form input[type="text"],
+    form textarea,
+    form select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    form button {
+      margin-top: 10px;
+      padding: 8px 16px;
+      background-color: #457b9d;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    form button:hover {
+      background-color: #355a75;
+    }
+    .post {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="search.html">Search</a>
+    <a href="directory.html">Directory</a>
+    <a href="forum.html">Forum</a>
+    <a href="news.html">News</a>
+  </nav>
+  <div class="container">
+    <h1>Community Forum</h1>
+    <p>Share your experiences, tips and recipes about organic food. Posts are stored in your browser only.</p>
+    <form id="postForm">
+      <label for="postCategory">Category:</label>
+      <select id="postCategory">
+        <option value="General">General</option>
+        <option value="Farm Experiences">Farm Experiences</option>
+        <option value="Recipes">Recipes</option>
+        <option value="Growing Advice">Growing Advice</option>
+        <option value="Sustainable Living">Sustainable Living</option>
+        <option value="Market Tips">Market Tips</option>
+        <option value="Organic News">Organic News</option>
+      </select>
+      <label for="postTitle">Title:</label>
+      <input type="text" id="postTitle" required />
+      <label for="postContent">Content:</label>
+      <textarea id="postContent" rows="4" required></textarea>
+      <button type="submit">Post</button>
+    </form>
+    <!-- Users can request new forum topics -->
+    <div style="margin-top:20px;">
+      <label for="newCategory">Suggest a new topic (awaiting approval):</label>
+      <input type="text" id="newCategory" placeholder="Enter topic name" />
+      <button id="requestCategoryBtn" type="button">Request</button>
+      <p id="requestMessage" style="font-style: italic; margin-top:5px;"></p>
+    </div>
+    <div id="posts"></div>
+  </div>
+  <div class="bottom-bar"></div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      function loadPosts() {
+        const postsContainer = document.getElementById('posts');
+        postsContainer.innerHTML = '';
+        const posts = JSON.parse(localStorage.getItem('forumPosts') || '[]');
+        if (posts.length === 0) {
+          postsContainer.innerHTML = '<p>No posts yet. Start the conversation!</p>';
+          return;
+        }
+        // show newest first
+        posts.slice().reverse().forEach(function(post) {
+          const div = document.createElement('div');
+          div.className = 'card post';
+          div.innerHTML = `<h3>${post.title}</h3><p><strong>Category:</strong> ${post.category}</p><p>${post.content}</p><p><em>${post.timestamp}</em></p>`;
+          postsContainer.appendChild(div);
+        });
+      }
+      document.getElementById('postForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const category = document.getElementById('postCategory').value;
+        const title = document.getElementById('postTitle').value.trim();
+        const content = document.getElementById('postContent').value.trim();
+        if (!title || !content) return;
+        const post = { category: category, title: title, content: content, timestamp: new Date().toLocaleString() };
+        const posts = JSON.parse(localStorage.getItem('forumPosts') || '[]');
+        posts.push(post);
+        localStorage.setItem('forumPosts', JSON.stringify(posts));
+        // reset form
+        document.getElementById('postTitle').value = '';
+        document.getElementById('postContent').value = '';
+        loadPosts();
+      });
+      // handle new topic requests
+      const requestBtn = document.getElementById('requestCategoryBtn');
+      const newCatInput = document.getElementById('newCategory');
+      const requestMsg = document.getElementById('requestMessage');
+      requestBtn.addEventListener('click', function() {
+        const newCat = newCatInput.value.trim();
+        if (!newCat) return;
+        // store in localStorage pending approvals
+        const requests = JSON.parse(localStorage.getItem('requestedCategories') || '[]');
+        requests.push({ name: newCat, timestamp: new Date().toLocaleString() });
+        localStorage.setItem('requestedCategories', JSON.stringify(requests));
+        requestMsg.textContent = 'Thank you! Your topic request has been submitted for approval.';
+        newCatInput.value = '';
+        // hide message after a few seconds
+        setTimeout(function() { requestMsg.textContent = ''; }, 4000);
+      });
+      loadPosts();
+    });
+  </script>
+</body>
+</html>

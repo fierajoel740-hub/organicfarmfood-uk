@@ -1,0 +1,101 @@
+/* Global styles for Organic Farm Food UK */
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f4f2e8; /* soft off‑white */
+  color: #0b2539; /* dark teal/navy for text */
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  box-sizing: border-box;
+  border: 10px solid #0b2539; /* dark border around the whole page */
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  padding: 40px 20px;
+}
+
+nav {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  padding: 10px 20px;
+}
+
+nav a {
+  color: #0b2539;
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  background-color: #d4e9e2; /* pale green */
+  font-weight: bold;
+}
+
+nav a:hover {
+  background-color: #beded6;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  flex: 1;
+}
+
+.bottom-bar {
+  background-color: #df7053; /* warm coral accent */
+  height: 40px;
+  width: 100%;
+}
+
+/* Hero section specific to the home page */
+.hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40px 20px;
+}
+
+.hero .text {
+  flex: 1 1 50%;
+  min-width: 280px;
+}
+
+.hero .text h1 {
+  font-size: 3em;
+  font-weight: 900;
+  margin: 0 0 10px;
+  color: #0b2539;
+  line-height: 1.2;
+}
+
+.hero .text p {
+  font-size: 1.1em;
+  margin: 10px 0 0;
+  color: #333;
+}
+
+.hero img {
+  flex: 1 1 40%;
+  max-width: 450px;
+  width: 100%;
+  height: auto;
+  margin-top: 20px;
+}
+
+/* Card styles for listings and results */
+.card {
+  background-color: #ffffff;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+  padding: 20px;
+  margin: 15px 0;
+}
+
+.card h3 {
+  margin-top: 0;
+  color: #0b2539;
+}

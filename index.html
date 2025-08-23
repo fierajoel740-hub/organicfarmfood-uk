@@ -11,59 +11,27 @@
     integrity="sha256-sA+8FJGkS1EWilIYCHAbGYQ7hOZQ5hZl3lGClNf5VTc="
     crossorigin=""
   />
+  <!-- Global styles -->
+  <link rel="stylesheet" href="style.css" />
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #fcf9f1;
-      color: #333;
-    }
-    header {
-      background-color: #a8dadc;
-      padding: 20px;
-      text-align: center;
-      color: #062925;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 2.4em;
-    }
-    header p {
-      margin-top: 5px;
-      font-size: 1.1em;
-    }
-    nav {
-      background-color: #f1faee;
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      padding: 10px;
-      flex-wrap: wrap;
-    }
-    nav a {
-      color: #1d3557;
-      text-decoration: none;
-      padding: 6px 12px;
-      border-radius: 4px;
-      background-color: #d4e9e2;
-    }
-    nav a:hover {
-      background-color: #c2d8cf;
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 20px;
+    /* Page-specific styles for the home page */
+    #map {
+      width: 100%;
+      height: 400px;
+      margin-top: 40px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
     .search-bar {
-      margin: 20px 0;
+      margin-top: 20px;
       display: flex;
       gap: 10px;
+      flex-wrap: wrap;
     }
     .search-bar input,
-    .search-bar select,
     .search-bar button {
-      padding: 8px;
+      padding: 10px;
       border: 1px solid #ccc;
       border-radius: 4px;
       font-size: 1em;
@@ -77,45 +45,40 @@
     .search-bar button:hover {
       background-color: #355a75;
     }
-    #map {
-      width: 100%;
-      height: 400px;
-      margin-top: 20px;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    footer {
-      text-align: center;
-      padding: 20px;
-      background-color: #a8dadc;
-      color: #062925;
-      margin-top: 40px;
-    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Organic Farm Food UK</h1>
-    <p>Your guide to organic farm shops, veg boxes and local produce</p>
-  </header>
+  <!-- Navigation -->
   <nav>
     <a href="index.html">Home</a>
     <a href="search.html">Search</a>
     <a href="directory.html">Directory</a>
+    <a href="forum.html">Forum</a>
     <a href="news.html">News</a>
   </nav>
-  <div class="container">
-    <h2>Welcome</h2>
-    <p>Use the search bar below to find farms, veg‑box schemes and organic stores by city, category or keyword. Explore the map to see where our listings are located across the UK.</p>
-    <!-- Search bar on home page -->
-    <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Search by city, postcode or keyword" />
-      <button onclick="performHomeSearch()">Search</button>
+  <!-- Hero section -->
+  <section class="hero">
+    <div class="text">
+      <h1>Find your farm,
+        <br />taste the goodness.</h1>
+      <p>Tired of bland food and boring grocery trips? Us too. That’s why we built organicfarmfood.uk – your new favourite directory for discovering incredible organic farms and producers across the UK.</p>
+      <!-- Search bar in hero -->
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Enter city, postcode or keyword" />
+        <button onclick="performHomeSearch()">Search</button>
+      </div>
     </div>
+    <img src="hero.png" alt="Illustration of farm with barn and sheep" />
+  </section>
+  <!-- Main content container -->
+  <div class="container">
+    <h2>Explore farms across the UK</h2>
+    <p>Use the interactive map below to see where our listings are located. Zoom in and click on a marker to learn more about a farm, veg‑box scheme or organic shop near you.</p>
     <!-- Interactive map -->
     <div id="map"></div>
   </div>
+  <!-- Accent bar at bottom of page -->
+  <div class="bottom-bar"></div>
   <footer>
     &copy; 2025 Organic Farm Food UK. Helping you find organic food locally.
   </footer>

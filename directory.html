@@ -4,77 +4,39 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Directory – Organic Farm Food UK</title>
+  <!-- Global styles -->
+  <link rel="stylesheet" href="style.css" />
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #fcf9f1;
-      color: #333;
+    /* Page-specific styles for directory */
+    /* Card-like appearance for each listing */
+    .listing {
+      background-color: #ffffff;
+      border-radius: 6px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+      padding: 15px;
+      margin: 15px 0;
     }
-    header {
-      background-color: #a8dadc;
-      padding: 20px;
-      text-align: center;
-      color: #062925;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 2em;
-    }
-    nav {
-      background-color: #f1faee;
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      padding: 10px;
-      flex-wrap: wrap;
-    }
-    nav a {
-      color: #1d3557;
-      text-decoration: none;
-      padding: 6px 12px;
-      border-radius: 4px;
-      background-color: #d4e9e2;
-    }
-    nav a:hover {
-      background-color: #c2d8cf;
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 20px;
+    .listing h3 {
+      margin-top: 0;
+      color: #0b2539;
     }
     h2 {
       margin-top: 40px;
       color: #457b9d;
     }
-    .listing {
-      background-color: #ffffff;
-      border-radius: 6px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.06);
-      margin: 15px 0;
-      padding: 15px;
-    }
-    .listing h3 {
-      margin-top: 0;
-      color: #457b9d;
-    }
-    .listing p {
-      margin: 4px 0;
-    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Organic Farm Food UK Directory</h1>
-  </header>
+  <!-- Navigation -->
   <nav>
     <a href="index.html">Home</a>
     <a href="search.html">Search</a>
     <a href="directory.html">Directory</a>
+    <a href="forum.html">Forum</a>
     <a href="news.html">News</a>
   </nav>
   <div class="container">
+    <h1>Organic Farm Food UK Directory</h1>
     <p>Browse all of our listings below. Entries are grouped by city for easy browsing.</p>
 
     <!-- Edinburgh Listings -->
@@ -117,7 +79,7 @@
 
     <!-- Glasgow Listings -->
     <h2 id="glasgow">Glasgow</h2>
-    <div class="listing">
+<div class="listing">
       <h3>Locavore</h3>
       <p><strong>Category:</strong> Farm shops &amp; veg boxes</p>
       <p><strong>Description:</strong> Social‑enterprise grocer and grower delivering seasonal veg boxes; shops stock organic produce, refill stations and household goods.</p>
@@ -410,5 +372,99 @@
       <p><strong>Phone:</strong> 01224 596156 &nbsp; <strong>Email:</strong> orders@cfine.org</p>
     </div>
   </div>
+  <!-- Accent bar at bottom of page -->
+  <div class="bottom-bar"></div>
+  <!-- Review functionality script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Helper to load reviews from localStorage and display them
+      function loadReviews(name, container) {
+        const storageKey = 'reviews-' + name;
+        const list = JSON.parse(localStorage.getItem(storageKey) || '[]');
+        container.innerHTML = '';
+        if (list.length > 0) {
+          const heading = document.createElement('h4');
+          heading.textContent = 'Reviews';
+          container.appendChild(heading);
+          list.forEach(function(r) {
+            const p = document.createElement('p');
+            p.innerHTML = '<strong>Rating:</strong> ' + r.rating + '/5<br>' + r.comment + ' <em>(' + r.timestamp + ')</em>';
+            container.appendChild(p);
+          });
+        }
+      }
+      // Iterate through each listing card and augment with review form
+      const listings = document.querySelectorAll('.listing');
+      listings.forEach(function(listing) {
+        const nameEl = listing.querySelector('h3');
+        if (!nameEl) return;
+        const name = nameEl.innerText;
+        const idKey = name.replace(/\s+/g, '_').replace(/[^A-Za-z0-9_]/g, '');
+        // container for reviews
+        const reviewsDiv = document.createElement('div');
+        reviewsDiv.id = 'reviews-' + idKey;
+        reviewsDiv.className = 'reviews-section';
+        listing.appendChild(reviewsDiv);
+        // button to toggle form
+        const toggleBtn = document.createElement('button');
+        toggleBtn.textContent = 'Leave a review';
+        toggleBtn.style.marginTop = '10px';
+        listing.appendChild(toggleBtn);
+        // review form
+        const formDiv = document.createElement('div');
+        formDiv.style.display = 'none';
+        formDiv.style.marginTop = '10px';
+        // rating select
+        const ratingLabel = document.createElement('label');
+        ratingLabel.textContent = 'Rating: ';
+        const ratingSelect = document.createElement('select');
+        ratingSelect.id = 'rating-' + idKey;
+        for (let i = 1; i <= 5; i++) {
+          const opt = document.createElement('option');
+          opt.value = i;
+          opt.textContent = i;
+          ratingSelect.appendChild(opt);
+        }
+        ratingLabel.appendChild(ratingSelect);
+        formDiv.appendChild(ratingLabel);
+        // comment textarea
+        const textarea = document.createElement('textarea');
+        textarea.id = 'comment-' + idKey;
+        textarea.placeholder = 'Your review';
+        textarea.rows = 3;
+        textarea.style.width = '100%';
+        textarea.style.marginTop = '5px';
+        formDiv.appendChild(document.createElement('br'));
+        formDiv.appendChild(textarea);
+        // submit button
+        const submitBtn = document.createElement('button');
+        submitBtn.textContent = 'Submit';
+        submitBtn.style.marginTop = '5px';
+        // submit handler
+        submitBtn.onclick = function() {
+          const rating = ratingSelect.value;
+          const comment = textarea.value.trim();
+          if (comment === '') return;
+          const review = { rating: parseInt(rating), comment: comment, timestamp: new Date().toLocaleString() };
+          const storageKey = 'reviews-' + name;
+          const list = JSON.parse(localStorage.getItem(storageKey) || '[]');
+          list.push(review);
+          localStorage.setItem(storageKey, JSON.stringify(list));
+          textarea.value = '';
+          formDiv.style.display = 'none';
+          loadReviews(name, reviewsDiv);
+        };
+        formDiv.appendChild(document.createElement('br'));
+        formDiv.appendChild(submitBtn);
+        listing.appendChild(formDiv);
+        // toggle button event
+        toggleBtn.onclick = function() {
+          formDiv.style.display = formDiv.style.display === 'none' ? 'block' : 'none';
+        };
+        // load existing reviews
+        loadReviews(name, reviewsDiv);
+      });
+    });
+  </script>
 </body>
 </html>

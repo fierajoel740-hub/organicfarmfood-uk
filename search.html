@@ -4,51 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Search – Organic Farm Food UK</title>
+  <!-- Global styles -->
+  <link rel="stylesheet" href="style.css" />
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #fcf9f1;
-      color: #333;
-    }
-    header {
-      background-color: #a8dadc;
-      padding: 20px;
-      text-align: center;
-      color: #062925;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 2em;
-    }
-    nav {
-      background-color: #f1faee;
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      padding: 10px;
-      flex-wrap: wrap;
-    }
-    nav a {
-      color: #1d3557;
-      text-decoration: none;
-      padding: 6px 12px;
-      border-radius: 4px;
-      background-color: #d4e9e2;
-    }
-    nav a:hover {
-      background-color: #c2d8cf;
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 20px;
-    }
+    /* Page-specific styles for the search page */
     .filters {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-bottom: 20px;
+      margin: 20px 0;
     }
     .filters input,
     .filters select,
@@ -67,33 +31,23 @@
     .filters button:hover {
       background-color: #355a75;
     }
+    /* Results adopt card styling from global stylesheet */
     .result {
       margin-bottom: 20px;
-      padding: 15px;
-      background-color: #ffffff;
-      border-radius: 6px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.06);
-    }
-    .result h3 {
-      margin-top: 0;
-      color: #457b9d;
-    }
-    .result p {
-      margin: 5px 0;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Search Listings</h1>
-  </header>
+  <!-- Navigation -->
   <nav>
     <a href="index.html">Home</a>
     <a href="search.html">Search</a>
     <a href="directory.html">Directory</a>
+    <a href="forum.html">Forum</a>
     <a href="news.html">News</a>
   </nav>
   <div class="container">
+    <h1>Search Listings</h1>
     <div class="filters">
       <select id="cityFilter">
         <option value="">All Cities</option>
@@ -152,6 +106,8 @@
     </div>
     <div id="results"></div>
   </div>
+  <!-- Accent bar at bottom of page -->
+  <div class="bottom-bar"></div>
   <script>
     // Data for search results: includes latitude, longitude and whether the service can deliver online
     const data = [
@@ -569,8 +525,9 @@
         resultsDiv.innerHTML = '<p>No results found.</p>';
       } else {
         filtered.forEach(item => {
-          const div = document.createElement('div');
-          div.className = 'result';
+        const div = document.createElement('div');
+          // apply card styling defined in global stylesheet
+          div.className = 'result card';
           const distanceInfo = item.distance !== undefined ? `<p><strong>Distance:</strong> ${item.distance.toFixed(1)} miles</p>` : '';
           div.innerHTML = `<h3>${item.name}</h3><p><strong>City:</strong> ${item.city}</p><p><strong>Category:</strong> ${item.category}</p><p><strong>Address:</strong> ${item.address}</p>${distanceInfo}<p>${item.description}</p>`;
           resultsDiv.appendChild(div);
