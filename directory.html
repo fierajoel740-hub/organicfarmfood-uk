@@ -6,29 +6,14 @@
   <title>Directory – Farm Food Finder UK</title>
   <!-- Global styles -->
   <link rel="stylesheet" href="style.css" />
-  <style>
-    /* Page-specific styles for directory */
-    /* Card-like appearance for each listing */
-    .listing {
-      background-color: #ffffff;
-      border-radius: 6px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
-      padding: 15px;
-      margin: 15px 0;
-    }
-    .listing h3 {
-      margin-top: 0;
-      color: #0b2539;
-    }
-    h2 {
-      margin-top: 40px;
-      color: #457b9d;
-    }
-  </style>
 </head>
 <body>
   <!-- Navigation -->
   <nav>
+    <a class="brand" href="index.html">
+      <img src="assets/fff-logo.png" alt="Farm Food Finder logo" />
+      <span>Farm Food Finder UK</span>
+    </a>
     <a href="index.html">Home</a>
     <a href="search.html">Search</a>
     <a href="directory.html">Directory</a>
@@ -43,7 +28,7 @@
 
     <!-- Edinburgh Listings -->
     <h2 id="edinburgh">Edinburgh</h2>
-    <div class="listing">
+    <div class="card listing">
       <h3>East Coast Organics</h3>
       <p><strong>Category:</strong> Veg box scheme</p>
       <p><strong>Description:</strong> Certified organic market garden offering weekly or fortnightly fruit &amp; veg boxes delivered around Edinburgh and East Lothian.</p>
@@ -81,7 +66,7 @@
 
     <!-- Glasgow Listings -->
     <h2 id="glasgow">Glasgow</h2>
-<div class="listing">
+<div class="card listing">
       <h3>Locavore</h3>
       <p><strong>Category:</strong> Farm shops &amp; veg boxes</p>
       <p><strong>Description:</strong> Social‑enterprise grocer and grower delivering seasonal veg boxes; shops stock organic produce, refill stations and household goods.</p>
@@ -375,7 +360,10 @@
     </div>
   </div>
   <!-- Accent bar at bottom of page -->
-  <div class="bottom-bar"></div>
+  <!-- Footer -->
+  <div class="footer">
+    &copy; 2025 Farm Food Finder UK. Helping you find organic food locally.
+  </div>
   <!-- Review functionality script -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {

@@ -6,40 +6,14 @@
   <title>Search – Farm Food Finder UK</title>
   <!-- Global styles -->
   <link rel="stylesheet" href="style.css" />
-  <style>
-    /* Page-specific styles for the search page */
-    .filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 20px 0;
-    }
-    .filters input,
-    .filters select,
-    .filters button {
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 1em;
-    }
-    .filters button {
-      background-color: #457b9d;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-    }
-    .filters button:hover {
-      background-color: #355a75;
-    }
-    /* Results adopt card styling from global stylesheet */
-    .result {
-      margin-bottom: 20px;
-    }
-  </style>
 </head>
 <body>
   <!-- Navigation -->
   <nav>
+    <a class="brand" href="index.html">
+      <img src="assets/fff-logo.png" alt="Farm Food Finder logo" />
+      <span>Farm Food Finder UK</span>
+    </a>
     <a href="index.html">Home</a>
     <a href="search.html">Search</a>
     <a href="directory.html">Directory</a>
@@ -108,8 +82,10 @@
     </div>
     <div id="results"></div>
   </div>
-  <!-- Accent bar at bottom of page -->
-  <div class="bottom-bar"></div>
+  <!-- Footer -->
+  <div class="footer">
+    &copy; 2025 Farm Food Finder UK. Helping you find organic food locally.
+  </div>
   <script>
     // Data for search results: includes latitude, longitude and whether the service can deliver online
     const data = [

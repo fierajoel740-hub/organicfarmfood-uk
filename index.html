@@ -11,43 +11,14 @@
   />
   <!-- Global styles -->
   <link rel="stylesheet" href="style.css" />
-  <style>
-    /* Page-specific styles for the home page */
-    #map {
-      width: 100%;
-      height: 400px;
-      margin-top: 40px;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    .search-bar {
-      margin-top: 20px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .search-bar input,
-    .search-bar button {
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 1em;
-    }
-    .search-bar button {
-      background-color: #457b9d;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-    }
-    .search-bar button:hover {
-      background-color: #355a75;
-    }
-  </style>
 </head>
 <body>
   <!-- Navigation -->
   <nav>
+    <a class="brand" href="index.html">
+      <img src="assets/fff-logo.png" alt="Farm Food Finder logo" />
+      <span>Farm Food Finder UK</span>
+    </a>
     <a href="index.html">Home</a>
     <a href="search.html">Search</a>
     <a href="directory.html">Directory</a>
@@ -77,11 +48,10 @@
     <!-- Interactive map -->
     <div id="map"></div>
   </div>
-  <!-- Accent bar at bottom of page -->
-  <div class="bottom-bar"></div>
-  <footer>
-    &copy; 2025 Farm Food Finder UK.  Helping you find organic food locally.
-  </footer>
+  <!-- Footer -->
+  <div class="footer">
+    &copy; 2025 Farm Food Finder UK. Helping you find organic food locally.
+  </div>
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
